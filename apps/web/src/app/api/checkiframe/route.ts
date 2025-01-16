@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-export async function GET(request: Request) {
+export async function GET(request: Request): Promise<NextResponse> {
   const { searchParams } = new URL(request.url)
   const url = searchParams.get('url')
 
@@ -21,5 +21,6 @@ export async function GET(request: Request) {
   } catch (error) {
     return NextResponse.json({ error: 'Failed to check URL' }, { status: 500 })
   }
+
 }
 
