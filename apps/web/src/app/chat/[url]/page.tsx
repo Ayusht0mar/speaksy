@@ -5,7 +5,7 @@ export default function ChatPage({ params }: { params: { url: string } }): JSX.E
 
 
   return (
-    <div className="flex w-screen">
+    <div className="flex w-screen max-w-screen-2xl">
       <div className="w-0 md:w-1/2 h-screen">
         <WebPreview params={params}/>
       </div>
