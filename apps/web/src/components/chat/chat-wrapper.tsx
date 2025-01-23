@@ -14,11 +14,10 @@ function ChatWrapper ({initialMessages, sessionId} : {sessionId: string, initial
     })
 
     return ( 
-        <div className="relative min-h-full bg-zinc-900 flex  flex-col justify-between gap-2 w-full">
-            <div className="flex-1 text-black bg-zinc-800 justify-between flex flex-col">
+        <div className="relative h-screen bg-zinc-900 flex  flex-col justify-between gap-2 w-full">
+            <div className="flex-1 text-black bg-zinc-800 justify-between flex flex-col overflow-y-scroll no-scrollbar">
                 <Messages messages={messages}/>
             </div>
-            
             <ChatInput handleInputChange={handleInputChange} handleSubmit={handleSubmit} setInput={setInput}/>
         </div>
      );
