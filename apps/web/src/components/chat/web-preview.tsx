@@ -10,19 +10,17 @@ export default function WebPreview({ params }: { params: { url: string } }) {
   useEffect(() => {
     const validateAndCheck = async (): Promise<void> => {
       try {
-        const url = decodeURIComponent(params.url);
-        const validatedUrl = new URL(url); // Validate URL
+        const decoded = decodeURIComponent(params.url); 
+        const validatedUrl = new URL(decoded);
         setDecodedUrl(validatedUrl.href);
 
-        // Await the Promise returned by checkXFrameOptions
         await checkXFrameOptions(validatedUrl.href);
       } catch (error) {
         notFound();
       }
     };
 
-    // Call the async function
-    validateAndCheck().catch();
+    void validateAndCheck(); // Properly handled async function
   }, [params.url]);
 
   interface CheckIframeResponse {
@@ -32,7 +30,7 @@ export default function WebPreview({ params }: { params: { url: string } }) {
   const checkXFrameOptions = async (url: string): Promise<void> => {
     try {
       const response = await fetch(`/api/checkiframe?url=${encodeURIComponent(url)}`);
-      const data: CheckIframeResponse = await response.json();
+      const data = (await response.json()) as CheckIframeResponse; // Explicit type
       setCanEmbed(data.canEmbed);
     } catch (error) {
       setCanEmbed(false);
@@ -46,7 +44,7 @@ export default function WebPreview({ params }: { params: { url: string } }) {
   if (canEmbed === null) {
     return (
       <div className="flex items-center justify-center h-full">
-        <p className="text-center text-lg">Getting Preview...</p>
+        <p className="text-center text-lg text-white">Getting Preview...</p>
       </div>
     );
   }
@@ -54,17 +52,17 @@ export default function WebPreview({ params }: { params: { url: string } }) {
   if (canEmbed) {
     return (
       <iframe
-        src={decodedUrl}
         className="w-full h-full border-0"
-        title="Website Content"
         sandbox="allow-scripts allow-same-origin"
+        src={decodedUrl}
+        title="Website Content"
       />
     );
   }
 
   return (
     <div className="flex items-center justify-center h-full">
-      <p className="text-center text-lg">This website doesn&apos;t allow preview.</p>
+      <p className="text-center text-lg text-white">This website doesn&apos;t allow preview. <br /> But you can ask questions</p>
     </div>
   );
 }
